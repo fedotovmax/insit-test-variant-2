@@ -115,7 +115,7 @@ text_analyzer/
 
 - internal/adapters — работа с HTTP, Redis и внешними сервисами
 
-- pkg/logger — инфраструктурные компоненты
+- pkg/logger — переиспользуемые компоненты
 
 ## Запуск
 
