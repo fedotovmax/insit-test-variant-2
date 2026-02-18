@@ -3,6 +3,8 @@ package config
 import (
 	"errors"
 	"fmt"
+
+	"github.com/fedotovmax/insit-test-variant-2/text_receiver/internal/validation"
 )
 
 var ErrInvalidAppEnv = errors.New("app env is invalid or not supported")
@@ -94,10 +96,43 @@ func New() (*AppConfig, error) {
 		AnalyzerClientURL: analyzerClientURL,
 	}
 
+	err = cfg.validate()
+
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
 	return cfg, nil
 
+}
+
+func (c *AppConfig) validate() error {
+
+	var validationErrors []error
+
+	err := validation.Range(c.HTTPServer.Port, 1024, 65535)
+
+	if err != nil {
+		validationErrors = append(validationErrors, fmt.Errorf("%s: %w", "HTTPServer.Port", err))
+	}
+
+	err = validation.EmptyString(c.Redis.Password)
+
+	if err != nil {
+		validationErrors = append(validationErrors, fmt.Errorf("%s: %w", "Redis.Password", err))
+	}
+
+	_, err = validation.IsURI(c.Redis.Addr)
+
+	if err != nil {
+		validationErrors = append(validationErrors, fmt.Errorf("%s: %w", "Redis.Addr", err))
+	}
+
+	_, err = validation.IsURI(c.AnalyzerClientURL)
+
+	if err != nil {
+		validationErrors = append(validationErrors, fmt.Errorf("%s: %w", "AnalyzerClientURL", err))
+	}
+
+	return errors.Join(validationErrors...)
 }
