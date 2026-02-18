@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 
+	_ "github.com/fedotovmax/insit-test-variant-2/text_receiver/docs"
 	"github.com/fedotovmax/insit-test-variant-2/text_receiver/internal/adapters/clients/http/analyzer"
 	"github.com/fedotovmax/insit-test-variant-2/text_receiver/internal/adapters/db/redis"
 	"github.com/fedotovmax/insit-test-variant-2/text_receiver/internal/adapters/db/redis/operation"

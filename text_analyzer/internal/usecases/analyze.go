@@ -31,10 +31,11 @@ func (u *AnalyzeUsecase) Execute(ctx context.Context, text inputs.Text) *domain.
 		totalWordLen  int
 		currentWord   int
 		inSentenceEnd bool
-		n             = len(text.Data)
 	)
 
 	runes := []rune(text.Data)
+
+	n := len(runes)
 
 	for i := 0; i < n; i++ {
 		r := runes[i]

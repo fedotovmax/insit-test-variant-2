@@ -1,0 +1,7 @@
+.env
+.dev.env
+protos
+.DS_Store
+notes
+bin
+node_modules

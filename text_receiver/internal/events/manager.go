@@ -78,7 +78,6 @@ func (m *Manager) Stop(ctx context.Context) error {
 }
 
 func (m *Manager) Send(newOp *domain.ToProcessOperation) error {
-	m.log.Info("Save...")
 	select {
 	case <-m.ctx.Done():
 		return m.ctx.Err()

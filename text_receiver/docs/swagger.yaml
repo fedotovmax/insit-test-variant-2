@@ -1,0 +1,153 @@
+definitions:
+  domain.Error:
+    properties:
+      message:
+        type: string
+    type: object
+  domain.Operation:
+    properties:
+      id:
+        type: string
+      result:
+        $ref: '#/definitions/domain.Result'
+      status:
+        $ref: '#/definitions/domain.Status'
+    required:
+    - id
+    - status
+    type: object
+  domain.Result:
+    properties:
+      average_word_length:
+        type: number
+      sentences_Count:
+        type: integer
+      symbols_count:
+        type: integer
+      word_count:
+        type: integer
+    required:
+    - average_word_length
+    - sentences_Count
+    - symbols_count
+    - word_count
+    type: object
+  domain.SaveResponse:
+    properties:
+      id:
+        type: string
+    required:
+    - id
+    type: object
+  domain.Status:
+    enum:
+    - in_process
+    - completed
+    type: string
+    x-enum-varnames:
+    - StatusInProcess
+    - StatusCompleted
+  inputs.NewOperation:
+    properties:
+      text:
+        example: test message 123 456 789 test
+        type: string
+    required:
+    - text
+    type: object
+info:
+  contact:
+    email: f3d0t0tvmax@yandex.ru
+    name: Fedotv Maxim (developer)
+  description: Swagger Documentation for text_receiver app (тестовое задание для компании
+    "Инсит")
+  title: Swagger Documentation for text_receiver app
+  version: "1.0"
+paths:
+  /api/v1/health:
+    get:
+      consumes:
+      - application/json
+      description: health check
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.Error'
+      summary: health check
+      tags:
+      - receiver
+  /api/v1/status/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get operation status by id
+      parameters:
+      - description: Operation id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Operation'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/domain.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.Error'
+      summary: Get operation status by id
+      tags:
+      - receiver
+  /api/v1/text:
+    post:
+      consumes:
+      - application/json
+      description: Receive new text for analyze
+      parameters:
+      - description: Receive new text input
+        in: body
+        name: dto
+        required: true
+        schema:
+          $ref: '#/definitions/inputs.NewOperation'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.SaveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.Error'
+      summary: Receive new text for analyze
+      tags:
+      - receiver
+swagger: "2.0"
