@@ -1,0 +1,93 @@
+definitions:
+  domain.AnalyzeResult:
+    properties:
+      average_word_length:
+        type: number
+      sentences_count:
+        type: integer
+      symbols_count:
+        type: integer
+      word_count:
+        type: integer
+    required:
+    - average_word_length
+    - sentences_count
+    - symbols_count
+    - word_count
+    type: object
+  domain.Error:
+    properties:
+      message:
+        type: string
+    type: object
+  inputs.Text:
+    properties:
+      data:
+        example: test message 123 456 789 test
+        type: string
+    required:
+    - data
+    type: object
+info:
+  contact:
+    email: f3d0t0tvmax@yandex.ru
+    name: Fedotv Maxim (developer)
+  description: Swagger Documentation for text_analyzer app (тестовое задание для компании
+    "Инсит")
+  title: Swagger Documentation for text_analyzer app
+  version: "1.0"
+paths:
+  /api/v1/analyze:
+    post:
+      consumes:
+      - application/json
+      description: Analyze text
+      parameters:
+      - description: Analyze text input
+        in: body
+        name: dto
+        required: true
+        schema:
+          $ref: '#/definitions/inputs.Text'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.AnalyzeResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.Error'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/domain.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.Error'
+      summary: Analyze text
+      tags:
+      - analyzer
+  /api/v1/health:
+    get:
+      consumes:
+      - application/json
+      description: health check
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.Error'
+      summary: health check
+      tags:
+      - analyzer
+swagger: "2.0"

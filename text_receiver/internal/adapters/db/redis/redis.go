@@ -13,12 +13,12 @@ import (
 
 var ErrCloseTimeout = errors.New("the time to safely terminate the connection to the redis has expired")
 
-type redisDb struct {
+type RedisDb struct {
 	redisClient *goredis.Client
 	log         *slog.Logger
 }
 
-func New(cfg config.RedisConfig, log *slog.Logger) (*redisDb, error) {
+func New(cfg config.RedisConfig, log *slog.Logger) (*RedisDb, error) {
 
 	const op = "adapters.db.redis.New"
 
@@ -37,18 +37,18 @@ func New(cfg config.RedisConfig, log *slog.Logger) (*redisDb, error) {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
-	return &redisDb{
+	return &RedisDb{
 		redisClient: redisClient,
 		log:         log,
 	}, nil
 
 }
 
-func (r *redisDb) GetClient() *goredis.Client {
+func (r *RedisDb) GetClient() *goredis.Client {
 	return r.redisClient
 }
 
-func (r *redisDb) Stop(ctx context.Context) error {
+func (r *RedisDb) Stop(ctx context.Context) error {
 	op := "adapter.redis.Stop"
 
 	done := make(chan error, 1)
